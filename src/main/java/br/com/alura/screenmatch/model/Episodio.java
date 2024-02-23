@@ -14,8 +14,8 @@ public class Episodio {
         this.temporadas = numeroTemporada;
         this.titulo = dadosEpisodio.titulo();
         this.numeroEpisodio = dadosEpisodio.numero();
-        try {
 
+        try {
             this.avaliacao = Double.valueOf(dadosEpisodio.avaliacao());
         }catch (NumberFormatException ex){
             this.avaliacao = 0.0;
@@ -45,11 +45,10 @@ public class Episodio {
         this.avaliacao = avaliacao;
     }
 
-
-
     public void setDataLancamento(LocalDate dataLancamento) {
         this.dataLancamento = dataLancamento;
     }
+
 
     public Integer getTemporadas() {
         return temporadas;
