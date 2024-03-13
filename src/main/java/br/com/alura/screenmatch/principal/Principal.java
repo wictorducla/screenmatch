@@ -32,6 +32,8 @@ public class Principal {
                 1- Buscar series
                 2- Buscar episódios
                 3- Listar séries buscadas
+                4- Buscar série por titulo
+                5- Buscar série por ator
                 
                 0- sair
                 
@@ -52,12 +54,41 @@ public class Principal {
                 case 3:
                     listarSeriesBuscadas();
                     break;
+                case 4:
+                    buscarSeriePorTitulo();
+                    break;
+                case 5:
+                    buscarSeriePorAtor();
+                    break;
                 case 0:
                     System.out.println("saindo...");
                     break;
                 default:
                     System.out.println("Opção inválida!");
             }
+        }
+    }
+
+    private void buscarSeriePorAtor() {
+        System.out.println("Qual o nome do Ator? ");
+        var nomeAtor = leitura.nextLine();
+        System.out.println("Avaliações a partir de que valor?");
+        var avaliacao = leitura.nextDouble();
+        List<Serie> seriesEncontradas = repositorio.findByAtoresContainingIgnoreCaseAndAvaliacaoGreaterThanEqual(nomeAtor, avaliacao);
+        System.out.println("Série em que " + nomeAtor + " Trabalhou: ");
+        seriesEncontradas.forEach(s ->
+                System.out.println(s.getTitulo() + "Avaliação: " + s.getAvaliacao()));
+    }
+
+    private void buscarSeriePorTitulo() {
+        System.out.println("Escolha uma seire pelo nome: ");
+        var nomeSerie = leitura.nextLine();
+        Optional<Serie> serieBuscada = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
+
+        if (serieBuscada.isPresent()){
+            System.out.println("Dados da serie: " + serieBuscada.get());
+        }else {
+            System.out.println("Serie não encontrada!");
         }
     }
 
@@ -82,9 +113,7 @@ public class Principal {
         System.out.println("Escolha uma seire pelo nome: ");
         var nomeSerie = leitura.nextLine();
 
-        Optional<Serie> serie = series.stream()
-                .filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase()))
-                .findFirst();
+        Optional<Serie> serie = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
 
         if (serie.isPresent()){
 
